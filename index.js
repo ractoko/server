@@ -7,7 +7,7 @@ mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 
 mongoose.connect(
-  `mongodb://${IP_SERVER}:${PORT_DB}/leads`,
+  `mongodb+srv://leadswhats:miudNdgsKli94ZLP@cluster0.gxpzj.azure.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (err, res) => {
     if (err) {
