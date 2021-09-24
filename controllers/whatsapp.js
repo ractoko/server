@@ -33,7 +33,9 @@ const withSession = () => {
 
     client.on('auth_failure', () => {
         spinner.stop();
+        fs.unlinkSync(SESSION_FILE_PATH);
         console.log('** Error de autentificacion vuelve a generar el QRCODE (Debes Borrar el archivo session.json) **');
+        withOutSession();
     })
 
 
@@ -65,8 +67,10 @@ const withOutSession = () => {
     });
 
     client.on('auth_failure', () => {
+        fs.unlinkSync(SESSION_FILE_PATH);
         console.log('** Error de autentificacion vuelve a generar el QRCODE **');
-    })
+        withOutSession();
+    });
 
 
     client.on('authenticated', (session) => {
@@ -91,6 +95,26 @@ const qrLogin = (req, res) => {
     res.writeHead(200, { 'content-type': 'image/svg+xml' });
     fs.createReadStream(`./qr-code.svg`).pipe(res);
 }
+
+const connectionReady = () => {
+
+    /** Aqui escuchamos todos los mensajes que entran */
+    client.on('message', async msg => {
+        let { body } = msg
+        const { from, to } = msg;
+        body = body.toLowerCase();
+        sendMessage(from,'bot');
+    });
+};
+
+const sendMessage = (number = null, text = null) => new Promise((resolve, reject) => {
+    number = number.replace('@c.us', '');
+    number = `${number}@c.us`
+    const message = text;
+    const msg = client.sendMessage(number, message);
+    console.log(`${chalk.red('⚡⚡⚡ Enviando mensajes....')}`);
+    resolve(msg)
+});
 
 (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
 
