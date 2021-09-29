@@ -1,0 +1,18 @@
+{
+    "STEP_1": [
+        "Hola ¡Bienvenido a mi chat de WhatsApp! \n",
+        " *Te saluda BanorteBot* el asistente virtual 💻🖐️😃",
+        " ‼️ En qué puedo servirte? ‼️",
+        " ?? Si necesitas saber sobre algún credito 🛋️🛒escribe la palabra ‼️ Hipotecario o Auto y te mostrare más información😉",
+        " ?? si necesitas algún asesor escribe la palabra Asesor 👨🏻"
+    ],
+    "STEP_2": [
+        "Perfecto estos son los creditos hipotecarios. 🙂🤖"
+    ],
+    "STEP_3": [
+        "Perfecto estos son los creditos de auto. 🙂🤖"
+    ],
+    "STEP_ASESOR": [
+        "Te estamos transfiriendo con un Asesor ...👨🏻"
+    ]
+}

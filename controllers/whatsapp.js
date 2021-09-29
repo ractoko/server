@@ -6,6 +6,10 @@ const ora = require('ora');
 const chalk = require('chalk');
 const qrcode = require('qrcode-terminal');
 const qr = require('qr-image');
+const flow = require('../flow/steps.json');
+const messages = require('../flow/messages.json');
+const { json } = require('body-parser');
+const { search } = require('../app');
 let client;
 let sessionData;
 
@@ -103,23 +107,87 @@ const connectionReady = () => {
         let { body } = msg
         const { from, to } = msg;
         body = body.toLowerCase();
-        sendMessage(from,'bot');
+        console.log(body);
+        if( from == '5218441221035@c.us'){
+            if (flow.STEP_1.includes(body)) {
+                /*** Aqui damos la bienvenida*/    
+                console.log('STEP1', body);    
+                sendMessage(from, messages.STEP_1.join(''))
+                return
+            }
+            if (flow.STEP_2.includes(body)) {
+                /*** Hipotecario */    
+                console.log('STEP2', body);    
+                sendMessage(from, messages.STEP_2.join(''))
+                return
+            }
+            if (flow.STEP_3.includes(body)) {
+                /*** Automotriz */    
+                console.log('STEP3', body);    
+                sendMessage(from, messages.STEP_3.join(''))
+                return
+            }
+            if (flow.STEP_ASESOR.includes(body)) {
+                /*** Asesor */    
+                console.log('Asesor', body);    
+                sendMessage(from, messages.STEP_ASESOR.join(''))
+                return
+            }
+        }
+        
     });
 };
 
 const sendMessage = (number = null, text = null) => new Promise((resolve, reject) => {
-    number = number.replace('@c.us', '');
+    number = number.toString().replace('@c.us', '');
     number = `${number}@c.us`
     const message = text;
     const msg = client.sendMessage(number, message);
     console.log(`${chalk.red('⚡⚡⚡ Enviando mensajes....')}`);
-    resolve(msg)
+    resolve(msg);
 });
+
+const getChats = () => new Promise((resolve, reject) => {
+    const chats = client.getChats();
+    console.log(`${chalk.red('⚡⚡⚡ Obteniendo chats....')}`);
+    resolve(chats);
+});
+
+const getChatById = (id) => new Promise((resolve, reject) => {
+    const chat = client.getChatById(`${id}@c.us`);
+    console.log(`${chalk.red('⚡⚡⚡ Obteniendo chat....')}`);
+    resolve(chat);
+});
+
+const sendApi = (req, res) =>{
+    console.log(req.body);
+    const { number, text } = req.body;
+    console.log(number);
+    sendMessage(number,text);
+    res.send({status : "Enviado"});
+}
+
+const getChatsApi = async (req, res) =>{
+    console.log(await getChats());
+    res.send({status : "Get Chats"});
+}
+
+const getChatByIdApi = async (req, res) =>{
+    const chatId = req.body;
+    const chat = await getChatById(chatId);
+    console.log(JSON.stringify(chat));
+    const msgs = await chat.fetchMessages();
+    console.log(msgs);
+    res.send(JSON.stringify(msgs));
+}
 
 (fs.existsSync(SESSION_FILE_PATH)) ? withSession() : withOutSession();
 
 module.exports = {
     withOutSession,
     withSession,
-    qrLogin
+    sendApi,
+    qrLogin,
+    getChatsApi,
+    getChatByIdApi
   };

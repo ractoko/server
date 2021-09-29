@@ -1,0 +1,26 @@
+{
+    "STEP_1":[
+        "hola",
+        "ola",
+        "ole",
+        "inicio",
+        "welcome",
+        "buenos días",
+        "buenas tardes",
+        "buenas noches",
+        "me dieron este número"
+    ],
+    "STEP_2":[
+        "credito hipotecario",
+        "hipotecario",
+        "hipoteca"
+    ],
+    "STEP_3":[
+        "credito automotriz",
+        "auto",
+        "automotriz"
+    ],
+    "STEP_ASESOR":[
+        "asesor"
+    ]
+}

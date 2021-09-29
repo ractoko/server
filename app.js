@@ -4,11 +4,11 @@ const bodyParser = require("body-parser");
 const app = express();
 const { API_VERSION } = require("./config");
 
+
+app.use(express.json());
+app.use(express.urlencoded());
 // Load routings
 const whatsappRoutes = require("./routers/whatsapp");
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 // Configure Header HTTP
 app.use((req, res, next) => {
